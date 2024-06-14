@@ -15,6 +15,25 @@ const detail =  async(req, res) => {
     }
 }
 
+//amount and name based data find
+  const user = async(req,res) =>{
+     const {amount,job} = req.query;
+      console.log({amount,job});
+     try{
+          const find = await Expense.find({amount:{$gt:amount},job:job} )
+
+          if(!find){
+            res.status(404).json({message:"documents not found"});
+          }
+          res.status(200).json(find);
+        }
+     catch(error){
+
+      res.status(500).json("enter the right details",error)
+     }
+  }
+
+
 
 //amount base data find
     const getAmount = async(req,res)=>{
@@ -47,7 +66,7 @@ const getDetail = async(req,res) => {
     const updateDetail = async(req,res) =>{
       try{
       const value = req.params.amount;
-      const persons = await Expense.updateMany({amount:{$gt:value}},{$set:{amount:55000}});
+      const persons = await Expense.updateMany({amount:{$gt:value}},{$set:{amount:5000}});
       if(persons){
         res.status(200).json(persons);
       }
@@ -73,4 +92,4 @@ const getDetail = async(req,res) => {
     }
     }
 
-    export {detail,getAmount,updateDetail,deleteDetail,getDetail};
+    export {detail,getAmount,updateDetail,deleteDetail,getDetail,user};
